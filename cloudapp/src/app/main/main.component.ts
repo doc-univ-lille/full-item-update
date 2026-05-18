@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Papa, ParseResult } from 'ngx-papaparse';
+import { Papa, ParseResult, UnparseConfig } from 'ngx-papaparse';
 import { Item } from '../models/item.model';
-import {finalize } from "rxjs/operators";
 import { AlmaService } from '../services/alma.service';
-import { Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { RestErrorResponse } from '@exlibris/exl-cloudapp-angular-lib';
+
 
 @Component({
   selector: 'app-main',
@@ -13,11 +14,11 @@ import { Observable, Subject } from 'rxjs';
 export class MainComponent implements OnInit, OnDestroy {
  isWrongFileTypeLabel:String;
  files:File[] = [];
- futurCsv : Array<Array<String>> = new Array();
- barcodeList: string[] = []
+ csvString :string = ""
+ barcodeList: string[] = [];
 
 
-  constructor(private papa: Papa, private almaService: AlmaService){
+  constructor(private papa: Papa, private almaService: AlmaService,private http: HttpClient){
     this.isWrongFileTypeLabel = "";
   }
  
@@ -59,32 +60,58 @@ export class MainComponent implements OnInit, OnDestroy {
 
     // Traitement du fichier parsé
     async evaluateParsing( parsedFile:ParseResult){
-      var itemBackup: Array<Item> = new Array()
-      var csvMap : Map<string,string>[] = this.parsedCsvToMap(parsedFile.data)
 
-      console.log("la liste de maps")
-      console.log(csvMap)
-      console.log("la liste des code barres")
-      console.log(this.barcodeList)
-      
- 
-      for(let item= 0; item<csvMap.length; item++){
-        await this.almaService.getBarcode(csvMap[item].get("barcode")!)
-        .then((i:Item)=> itemBackup.push(i))
-        .catch((err)=> {console.log(err); console.log(csvMap[item].get("barcode"))});
+      var itemList: Array<Item> = new Array()
+      var csvMapList : Map<string,string>[] = this.parsedCsvToMap(parsedFile.data)
+      var futurCsv : Array<Array<any>> = new Array();
+      const header:string[] = parsedFile.data[0];
+
+      // Ajout des noms des différentes colonnes dans le futur csv de backup
+      futurCsv.push(header)
+
+      for(let index= 0; index<csvMapList.length; index++){
+        await this.almaService.getBarcode(csvMapList[index].get("barcode")!)
+        .then((i:Item)=> itemList.push(i))
+        .catch((err)=> {console.log(err); console.log(csvMapList[index].get("barcode"))});
 
     }
-    console.log("je suis sorti avec ca :")
-    console.log(itemBackup)
-    console.log(itemBackup[0].item_data)
+
+    itemList.forEach((item:Item) =>{
+      let modifiedItem:Item = item;
+      let csvData:Map<string,string> = this.findMapInMapList(modifiedItem.item_data.barcode, csvMapList);
+      let futurCsvLine: Array<string> = []
       
+      for(let index=1; index<header.length; index++){
+        let headerLabel:string = header[index];
+          futurCsvLine.push(<string>item["item_data"][headerLabel as keyof Item["item_data"]]);
+
+          // /!\ Cette ligne est APRES l'insertion de la ligne de backup dans le futur csv
+          item["item_data"][headerLabel as keyof Item["item_data"]] = csvData.get(headerLabel)!;
+        
+      }
+      this.almaService.updateItem(item).subscribe({
+        next: () => {
+          console.log(`Successfully saved item`);
+        },
+        error: (err: RestErrorResponse) => {
+          console.error(err);
+        },
+      });
+
+      futurCsv.push(futurCsvLine)
+    }
+  )
+    this.csvString = this.papa.unparse(futurCsv,{delimiter:"	"})
+    console.log(this.csvString)
+    
   }
-
-
+  
+  // Fonction permettant de créer une liste de maps contenant en clé les champs en en-tête du csv et en valeur, la valeur associée à cette colonne dans le csv.
     parsedCsvToMap(csvData: string[][]): Map<string,string>[]{
       const header:string[] = csvData[0];
       var csvMap : Map<string,string>[] = [];
 
+      
       for(let line= 1; line<csvData.length; line++){
          let temp : Map<string,string>= new Map();
           for(let column=0;column<header.length;column++){
@@ -102,8 +129,10 @@ export class MainComponent implements OnInit, OnDestroy {
       return csvMap;
     }
 
-    findMap(barcode:string, csvMap:Map<string,string>[] ):Map<string,string>{
+    // Fonction qui permet de retrouver une ligne du csv dans la liste des lignes
+    findMapInMapList(barcode:string, csvMap:Map<string,string>[] ):Map<string,string>{
       const index:number =  this.barcodeList.findIndex((code) => code === barcode );
       return csvMap[index];
     }
+
 }

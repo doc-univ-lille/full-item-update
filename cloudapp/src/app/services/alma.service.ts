@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CloudAppEventsService, CloudAppRestService } from '@exlibris/exl-cloudapp-angular-lib';
+import { CloudAppEventsService, CloudAppRestService,Request as ExRequest, HttpMethod } from '@exlibris/exl-cloudapp-angular-lib';
 import { Item } from '../models/item.model';
 import { forkJoin, lastValueFrom, Observable } from 'rxjs';
 
@@ -19,31 +19,19 @@ export class AlmaService {
     return (await lastValueFrom(obs));
   }
 
-   /*
-   getItemsFromBarcodeArray(barcodes: Array<string>):Promise<Array<Item>> {
-    let items: Array<Item> = [];
-    barcodes.forEach((barcode) => {
-      this.getBarcode(barcode)
-        .then((value:Item)=> items.push(value))
-        .catch(() => console.log("AAAAAAA"))
-    })
-    return items
-    */
-   };
+  buildItemLink(item: Item) {
+      return `/bibs/${item.bib_data.mms_id}/holdings/${item.holding_data.holding_id}/items/${item.item_data.pid}`;
 
-  /*
- getBarcode(barcode: string): Observable<Item> 
-  {
-    return this.restService.call<Item>(`/items?item_barcode=${barcode}`)
   }
 
-   getItemsFromBarcodeArray(barcodes: Array<string>) {
-    let observables: Observable<Item>[] = [];
-    barcodes.forEach((barcode) => observables.push(this.getBarcode(barcode)));
-    return forkJoin(observables)
-    }
-    */
-    
-
+  updateItem(item: Item) {
+    let req: ExRequest = {
+      requestBody: item,
+      url: this.buildItemLink(item),
+      method: HttpMethod.PUT,
+    };
+    return this.restService.call<Item>(req);
+  }
+}
 
   
