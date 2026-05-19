@@ -3,4 +3,13 @@
 <br>
 <Label> {{isWrongFileTypeLabel}} </Label>
 <br>
+<label>{{evaluatingLabel}}</label>
+<label translate>{{aa}}</label>
+
+<div class="eca-actions">
+  <button mat-stroked-button (click)="downloadReturnFile()" *ngIf="hasEvaluationEnded" translate>
+    <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
+    {{ 'UI.BackupDownloadButton' | translate }}
+  </button>
+</div>
 

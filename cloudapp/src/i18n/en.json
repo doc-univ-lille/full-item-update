@@ -1,3 +1,12 @@
 {
-    "translatedExampleText": "An example of a translated label"
+    "UI":{
+        "BackupDownloadButton":"Download backup file",
+        "LogsDownloadButton":"Download logs file"
+    },
+    "Back-end":{
+        "WrongFileType": "Please insert a .csv file",
+        "BadLength": "Number of lines above {{maxLinesForCsv}}, please shorten the csv file",
+        "Loading":"Loading",
+        "EndOfProcess":"Process completed"
+    }
 }

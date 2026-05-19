@@ -32,6 +32,15 @@ export class AlmaService {
     };
     return this.restService.call<Item>(req);
   }
+
+  updateArrayOfItems(items: Item[]) {
+    let observables:Observable<Item>[] = [];
+    //items.forEach((item) => observables.push(this.updateItem(item)));
+    return forkJoin(observables);
+  }
+
+
+ 
 }
 
   

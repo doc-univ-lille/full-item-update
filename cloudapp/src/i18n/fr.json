@@ -1,0 +1,12 @@
+{
+    "UI":{
+        "BackupDownloadButton":"Télécharger le fichier de backup",
+        "LogsDownloadButton":"Télécharger le fichier de logs"
+    },
+    "Back-end":{
+        "WrongFileType": "Veuillez entrer un fichier .csv",
+        "BadLength": "Nombre de lignes supérieur à {{maxLinesForCsv}}, veuillez raccourcir le csv",
+        "Loading":"En traitement",
+        "EndOfProcess":"Traitement terminé"
+    }
+}
