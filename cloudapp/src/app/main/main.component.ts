@@ -2,9 +2,10 @@ import { BootstrapOptions, Component, OnDestroy, OnInit } from '@angular/core';
 import { Papa, ParseResult, UnparseConfig } from 'ngx-papaparse';
 import { Item } from '../models/item.model';
 import { AlmaService } from '../services/alma.service';
-import { RestErrorResponse, AlertService} from '@exlibris/exl-cloudapp-angular-lib';
+import { RestErrorResponse, AlertService, InitData} from '@exlibris/exl-cloudapp-angular-lib';
 import { finalize } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { CloudAppEventsService } from '@exlibris/exl-cloudapp-angular-lib';
 
 // Po-line-export
 //preferred_language_ca
@@ -19,7 +20,8 @@ export class MainComponent implements OnInit, OnDestroy {
   // Labels
  isWrongFileTypeLabel:string;
  evaluatingLabel:string;
- aa:string;
+
+ isAdmin:boolean = false
  files:File[] = [];
  barcodeList: string[] = [];
  hasEvaluationEnded:boolean = false
@@ -31,15 +33,25 @@ export class MainComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private papa: Papa, private almaService: AlmaService,private translate: TranslateService,){
+  constructor(private papa: Papa, private almaService: AlmaService,private translate: TranslateService, private eventsService: CloudAppEventsService){
     this.isWrongFileTypeLabel = "";
     this.evaluatingLabel = "";
-    this.aa = ""
     
   }
  
   ngOnInit() {
 
+    this.eventsService.getInitData().subscribe((data:InitData) => {
+      if(data.user.isAdmin){
+        this.isAdmin =true;
+      }else{
+        // TODO : passer le true en false pour gestion des perms
+        this.isAdmin = true
+
+        console.log("COMPTE NON ADMIN, RETIRER LES DROITS AVANT PUBLICATION")
+      }
+ 
+  })
   }
 
   ngOnDestroy(): void {
@@ -69,7 +81,11 @@ export class MainComponent implements OnInit, OnDestroy {
   load(){
      this.papa.parse(this.files[0],{
         complete: (result) => {
+          if (result.meta.delimiter != "	"){
+            this.translate.get("Back-end.BadDelimiter").subscribe(text=>this.isWrongFileTypeLabel= text); return
+          }else {
           this.evaluateParsing(result)
+          }
         }})
    }
 
@@ -87,7 +103,8 @@ export class MainComponent implements OnInit, OnDestroy {
         {maxLinesForCsv: this.maxLinesForCsv})
       return
     }
-
+    
+   
     this.translate.get("Back-end.Loading").subscribe(text=>this.evaluatingLabel= text);
 
     // Ajout des noms des différentes colonnes dans le futur csv de backup
@@ -109,6 +126,7 @@ export class MainComponent implements OnInit, OnDestroy {
       let modifiedItem:Item = item;
       let csvData:Map<string,string> = this.findMapInMapList(modifiedItem.item_data.barcode, csvMapList);
       let futurCsvLine: Array<string> = []
+      futurCsvLine.push(<string>item["item_data"][header[0] as keyof Item["item_data"]]);
       
       for(let index=1; index<header.length; index++){
         let headerLabel:string = header[index];
@@ -126,8 +144,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.almaService.updateArrayOfItems(itemList).pipe(
       finalize(()=> {
         this.translate.get("Back-end.EndOfProcess").subscribe(text=>this.evaluatingLabel= text);
-        this.hasEvaluationEnded = true;
-        this.downloadReturnFile()})
+        this.hasEvaluationEnded = true;})
     ).subscribe({
         next: () => {
           console.log(`Successfully saved items`);
@@ -138,7 +155,6 @@ export class MainComponent implements OnInit, OnDestroy {
         },
       })
     this.csvString = this.papa.unparse(futurCsv,{delimiter:"	"})
-    console.log(this.journal)
     
   }
   
@@ -171,14 +187,27 @@ export class MainComponent implements OnInit, OnDestroy {
       return csvMap[index];
     }
 
-     downloadReturnFile() {
-    const blob = new Blob([this.csvString], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'return_barcodes.txt';
-    link.click();
-    window.URL.revokeObjectURL(url);
+     
+    downloadBackupFile() {
+      const blobBackupFile = new Blob([this.csvString], { type: 'text/csv' });
+      const urlBackupFile = window.URL.createObjectURL(blobBackupFile);
+      const linkBackupFile = document.createElement('a');
+      linkBackupFile.href = urlBackupFile;
+      linkBackupFile.download = 'backup.xlsx';
+      linkBackupFile.click();
+      window.URL.revokeObjectURL(urlBackupFile);
+      
+  }
+  downloadLogsFile() {
+
+      const blobLogs = new Blob([this.journal], { type: 'text/plain' });
+      const urlLogs = window.URL.createObjectURL(blobLogs);
+      const linkLogs = document.createElement('a');
+      linkLogs.href = urlLogs;
+      linkLogs.download = 'logs.txt';
+      linkLogs.click();
+      window.URL.revokeObjectURL(urlLogs);
+      
   }
 
 }

@@ -1,12 +1,14 @@
 {
     "UI":{
         "BackupDownloadButton":"Download backup file",
-        "LogsDownloadButton":"Download logs file"
+        "LogsDownloadButton":"Download logs file",
+        "ForbiddenAccess": "You need to be an administrator to use this cloud-app"
     },
     "Back-end":{
         "WrongFileType": "Please insert a .csv file",
         "BadLength": "Number of lines above {{maxLinesForCsv}}, please shorten the csv file",
         "Loading":"Loading",
-        "EndOfProcess":"Process completed"
+        "EndOfProcess":"Process completed",
+        "BadDelimiter":"Please use a csv with tabulations as delimiter"
     }
 }

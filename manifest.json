@@ -2,5 +2,10 @@
    "id": "full-item-update",
    "title": "full-item-update",
    "subtitle": "full item update",
-   "author": "Elsa Logier"
+   "author": "Elsa Logier",
+   "contentSecurity": {
+      "sandbox": {
+         "downloads": true
+      }
+   }
 }
