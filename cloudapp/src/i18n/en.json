@@ -2,13 +2,15 @@
     "UI":{
         "BackupDownloadButton":"Download backup file",
         "LogsDownloadButton":"Download logs file",
-        "ForbiddenAccess": "You need to be an administrator to use this cloud-app"
+        "ForbiddenAccess": "You need to be an administrator to use this cloud-app",
+        "Launch":"Launch"
     },
     "Back-end":{
         "WrongFileType": "Please insert a .csv file",
         "BadLength": "Number of lines above {{maxLinesForCsv}}, please shorten the csv file",
         "Loading":"Loading",
         "EndOfProcess":"Process completed",
-        "BadDelimiter":"Please use a csv with tabulations as delimiter"
+        "BadDelimiter":"Please use a csv with tabulations as delimiter",
+        "BadHeaderLabel" : "The column name '{{headerLabel}}' does not exist. Please refer to the documentation to see the columns name available"
     }
 }

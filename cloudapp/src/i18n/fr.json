@@ -2,13 +2,15 @@
     "UI":{
         "BackupDownloadButton":"Télécharger le fichier de backup",
         "LogsDownloadButton":"Télécharger le fichier de logs",
-        "ForbiddenAccess": "Vous devez être administrateur pour utiliser cette cloud-app"
+        "ForbiddenAccess": "Vous devez être administrateur pour utiliser cette cloud-app",
+        "Launch":"Lancer le traitement"
     },
     "Back-end":{
         "WrongFileType": "Veuillez entrer un fichier .csv",
         "BadLength": "Nombre de lignes supérieur à {{maxLinesForCsv}}, veuillez raccourcir le csv",
         "Loading":"En traitement",
         "EndOfProcess":"Traitement terminé",
-        "BadDelimiter": "Veuillez entrer un csv avec une tabulation comme délimiteur"
+        "BadDelimiter": "Veuillez entrer un csv avec une tabulation comme délimiteur",
+        "BadHeaderLabel" : "Le nom de colonne '{{headerLabel}}' n'existe pas. Veuillez vous référer à la documentation pour voir les noms de colonne disponibles"
     }
 }

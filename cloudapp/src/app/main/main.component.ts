@@ -1,8 +1,8 @@
-import { BootstrapOptions, Component, OnDestroy, OnInit } from '@angular/core';
-import { Papa, ParseResult, UnparseConfig } from 'ngx-papaparse';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Papa, ParseResult} from 'ngx-papaparse';
 import { Item } from '../models/item.model';
 import { AlmaService } from '../services/alma.service';
-import { RestErrorResponse, AlertService, InitData} from '@exlibris/exl-cloudapp-angular-lib';
+import {InitData} from '@exlibris/exl-cloudapp-angular-lib';
 import { finalize } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { CloudAppEventsService } from '@exlibris/exl-cloudapp-angular-lib';
@@ -21,13 +21,14 @@ export class MainComponent implements OnInit, OnDestroy {
  isWrongFileTypeLabel:string;
  evaluatingLabel:string;
 
+ hasEvaluationEnded:boolean = false
  isAdmin:boolean = false
+ needToStop = false
  files:File[] = [];
  barcodeList: string[] = [];
- hasEvaluationEnded:boolean = false
  maxLinesForCsv:number = 100
 
-// Fichiers de logs
+// Fichiers de logs et de backup
  csvString :string = ""
  journal:string = ""
 
@@ -56,18 +57,15 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
   }
-  
+
 
   onFileChange(event:any ){
     const file:File = event.target.files[0];
+    this.resetApplication()
       if (file) {
         if (file.type == "text/csv"){
           this.isWrongFileTypeLabel = "";
           this.files[0] = file;
-
-          //TODO : externaliser le load par la suite pour l'appeler depuis un autre bouton
-          this.load(); 
-
 
         }
             else{
@@ -97,6 +95,8 @@ export class MainComponent implements OnInit, OnDestroy {
     var futurCsv : Array<Array<any>> = new Array();
     const header:string[] = parsedFile.data[0];
 
+    
+
     // Erreur si fichier trop long
     if(parsedFile.data.length> this.maxLinesForCsv +1 ){
       this.isWrongFileTypeLabel = this.translate.instant("Back-end.BadLength",
@@ -121,6 +121,19 @@ export class MainComponent implements OnInit, OnDestroy {
 
     }
 
+    header.forEach(label => {
+      const possibleHeaderList:Array<string> = Object.keys(itemList[0].item_data)
+      if(!possibleHeaderList.includes(label)){
+         this.isWrongFileTypeLabel = this.translate.instant("Back-end.BadHeaderLabel",{headerLabel: label})
+         this.needToStop=true
+         return
+      }
+    });
+
+    if(this.needToStop){
+      this.evaluatingLabel = "";
+      return
+    }
     // Préparation des items et du csv de backup
     itemList.forEach((item:Item) =>{
       let modifiedItem:Item = item;
@@ -134,7 +147,6 @@ export class MainComponent implements OnInit, OnDestroy {
 
           // /!\ Cette ligne est APRES l'insertion de la ligne de backup dans le futur csv
           item["item_data"][headerLabel as keyof Item["item_data"]] = csvData.get(headerLabel)!;
-        
       }
 
       futurCsv.push(futurCsvLine)
@@ -198,6 +210,8 @@ export class MainComponent implements OnInit, OnDestroy {
       window.URL.revokeObjectURL(urlBackupFile);
       
   }
+
+  
   downloadLogsFile() {
 
       const blobLogs = new Blob([this.journal], { type: 'text/plain' });
@@ -208,6 +222,12 @@ export class MainComponent implements OnInit, OnDestroy {
       linkLogs.click();
       window.URL.revokeObjectURL(urlLogs);
       
+  }
+
+  resetApplication(){
+    this.isWrongFileTypeLabel = "";
+    this.evaluatingLabel= "";
+    this.hasEvaluationEnded = false
   }
 
 }
