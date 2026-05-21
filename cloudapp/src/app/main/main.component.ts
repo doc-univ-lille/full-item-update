@@ -34,7 +34,11 @@ export class MainComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private papa: Papa, private almaService: AlmaService,private translate: TranslateService, private eventsService: CloudAppEventsService){
+  constructor(private papa: Papa, 
+    private almaService: AlmaService,
+    private translate: TranslateService,
+    private eventsService: CloudAppEventsService){
+
     this.isWrongFileTypeLabel = "";
     this.evaluatingLabel = "";
     
@@ -42,6 +46,7 @@ export class MainComponent implements OnInit, OnDestroy {
  
   ngOnInit() {
 
+    // Gestion des droits
     this.eventsService.getInitData().subscribe((data:InitData) => {
       if(data.user.isAdmin){
         this.isAdmin =true;
@@ -58,24 +63,25 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-
+// Méthode appellée lorsqu'un fichier est inséré.
   onFileChange(event:any ){
     const file:File = event.target.files[0];
     this.resetApplication()
+
       if (file) {
+        // Vérification du type de fichier
         if (file.type == "text/csv"){
           this.isWrongFileTypeLabel = "";
           this.files[0] = file;
-
         }
-            else{
-              this.translate.get("Back-end.WrongFileType").subscribe(text=>this.isWrongFileTypeLabel= text);
-            }
+        else{
+          this.translate.get("Back-end.WrongFileType").subscribe(text=>this.isWrongFileTypeLabel= text);
         }
+      }
   }
 
 
-    // Parsing du fichier csv
+    //Méthode permessant le parsing du fichier csv (et la vérification du délimiteur)
   load(){
      this.papa.parse(this.files[0],{
         complete: (result) => {
@@ -87,7 +93,7 @@ export class MainComponent implements OnInit, OnDestroy {
         }})
    }
 
-    // Traitement du fichier parsé
+  //Méthode permettant le traitement du fichier parsé
   async evaluateParsing( parsedFile:ParseResult){
 
     var itemList: Array<Item> = new Array()
@@ -104,16 +110,19 @@ export class MainComponent implements OnInit, OnDestroy {
       return
     }
     
-   
+    // Affichage du message de chargement
     this.translate.get("Back-end.Loading").subscribe(text=>this.evaluatingLabel= text);
 
-    // Ajout des noms des différentes colonnes dans le futur csv de backup
+    // Ajout des noms des différentes colonnes dans le csv de backup
     futurCsv.push(header)
 
+    // Pour toutes les lignes du csv, on récupère l'item grâce au code barre (si item non trouvé, une ligne est ajoutée au fichier de logs)
     for(let index= 0; index<csvMapList.length; index++){
       await this.almaService.getBarcode(csvMapList[index].get("barcode")!)
-        .then((i:Item)=> itemList.push(i))
-        .catch((err)=> {
+        .then(
+          (i:Item)=> itemList.push(i)
+        ).catch(
+          (err)=> {
           console.log(err)
           var line:string = `Barcode: ${csvMapList[index].get("barcode")} | Message: ${err.message} \n`
           this.journal = this.journal + line
@@ -121,6 +130,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     }
 
+    // On regarde si les noms des colonnes sont valide
     header.forEach(label => {
       const possibleHeaderList:Array<string> = Object.keys(itemList[0].item_data)
       if(!possibleHeaderList.includes(label)){
@@ -130,31 +140,42 @@ export class MainComponent implements OnInit, OnDestroy {
       }
     });
 
+    // Si un nom de colonne n'est pas valide, on arrête tout
     if(this.needToStop){
       this.evaluatingLabel = "";
       return
     }
+
+
     // Préparation des items et du csv de backup
     itemList.forEach((item:Item) =>{
+
       let modifiedItem:Item = item;
       let csvData:Map<string,string> = this.findMapInMapList(modifiedItem.item_data.barcode, csvMapList);
       let futurCsvLine: Array<string> = []
+
+      // Insertion de l'en-tête du csv de backup
       futurCsvLine.push(<string>item["item_data"][header[0] as keyof Item["item_data"]]);
       
+      // Insertion de chaque valeur de l'item dans la bonne colonne du csv de backup et modification de l'item
       for(let index=1; index<header.length; index++){
         let headerLabel:string = header[index];
+
+          // Insertion de la valeur dans le csv de backup
           futurCsvLine.push(<string>item["item_data"][headerLabel as keyof Item["item_data"]]);
 
-          // /!\ Cette ligne est APRES l'insertion de la ligne de backup dans le futur csv
+          // /!\ Cette ligne est APRES l'insertion de la ligne de backup dans le futur csv car elle modifie l'item
           item["item_data"][headerLabel as keyof Item["item_data"]] = csvData.get(headerLabel)!;
       }
 
       futurCsv.push(futurCsvLine)
     })
 
+
     // Update des items
     this.almaService.updateArrayOfItems(itemList).pipe(
       finalize(()=> {
+        // Passage du texte à "traitement terminé" et affichage des boutons
         this.translate.get("Back-end.EndOfProcess").subscribe(text=>this.evaluatingLabel= text);
         this.hasEvaluationEnded = true;})
     ).subscribe({
@@ -166,11 +187,16 @@ export class MainComponent implements OnInit, OnDestroy {
           this.journal = this.journal + line
         },
       })
+    
+    // Stockage du string de csv de backup
     this.csvString = this.papa.unparse(futurCsv,{delimiter:"	"})
     
   }
   
+
+
   // Fonction permettant de créer une liste de maps contenant en clé les champs en en-tête du csv et en valeur, la valeur associée à cette colonne dans le csv.
+  // Retourne une Liste Map<En-tête du champ: valeur de la ligne>
     parsedCsvToMap(csvData: string[][]): Map<string,string>[]{
       const header:string[] = csvData[0];
       var csvMap : Map<string,string>[] = [];
@@ -180,26 +206,28 @@ export class MainComponent implements OnInit, OnDestroy {
          let temp : Map<string,string>= new Map();
           for(let column=0;column<header.length;column++){
 
-            // Je construis la map
+            // Construction de la map  clé: en-tête du champ, valeur: valeur de la ligne
             temp.set(header[column],csvData[line][column]);
 
-            //Je construis la liste des code barres (qui me sert ensuite à retrouver la map dans la liste de maps)
+            //Construction de la liste des code barres (qui sert ensuite à retrouver la map dans la liste de maps)
             if (column == 0){
               this.barcodeList[line-1] = csvData[line][column];
             } 
           }
+          // Ajout de la map dans la liste de map ([line-1] car le header du csv inséré n'est pas dans csvMap)
           csvMap[line-1] = temp;
       }
       return csvMap;
     }
 
-    // Fonction qui permet de retrouver une ligne du csv dans la liste des lignes
+    // Fonction qui permet de retrouver une ligne du csv dans la liste au format Map
     findMapInMapList(barcode:string, csvMap:Map<string,string>[] ):Map<string,string>{
       const index:number =  this.barcodeList.findIndex((code) => code === barcode );
       return csvMap[index];
     }
 
-     
+
+    // Fonction permettant de télécharger le fichier de backup
     downloadBackupFile() {
       const blobBackupFile = new Blob([this.csvString], { type: 'text/csv' });
       const urlBackupFile = window.URL.createObjectURL(blobBackupFile);
@@ -211,7 +239,7 @@ export class MainComponent implements OnInit, OnDestroy {
       
   }
 
-  
+  // Fonction permettant de télécharger le fichier de logs
   downloadLogsFile() {
 
       const blobLogs = new Blob([this.journal], { type: 'text/plain' });
@@ -224,6 +252,7 @@ export class MainComponent implements OnInit, OnDestroy {
       
   }
 
+  // Fonction permettant réinitialiser l'application
   resetApplication(){
     this.isWrongFileTypeLabel = "";
     this.evaluatingLabel= "";

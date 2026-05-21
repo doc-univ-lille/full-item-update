@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent {
    constructor(private translate: TranslateService) {
-    // Default to English, and let Alma override if a different language is set
+    // Langage Anglais par défaut. Override si une autre langue disponible est sélectionnée dans Alma
     this.translate.setDefaultLang('en');
     const browserLang = this.translate.getBrowserLang();
     this.translate.use(browserLang || 'en');
