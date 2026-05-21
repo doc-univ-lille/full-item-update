@@ -35,7 +35,7 @@ export class AlmaService {
 
   updateArrayOfItems(items: Item[]) {
     let observables:Observable<Item>[] = [];
-    //items.forEach((item) => observables.push(this.updateItem(item)));
+    items.forEach((item) => observables.push(this.updateItem(item)));
     return forkJoin(observables);
   }
 
