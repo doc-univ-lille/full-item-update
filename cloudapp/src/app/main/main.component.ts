@@ -17,16 +17,19 @@ import { CloudAppEventsService } from '@exlibris/exl-cloudapp-angular-lib';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
+  maxLinesForCsv:number = 100
+
   // Labels
- isWrongFileTypeLabel:string;
+ ErrorLabel:string;
  evaluatingLabel:string;
 
  hasEvaluationEnded:boolean = false
  isAdmin:boolean = false
  needToStop = false
+
  files:File[] = [];
  barcodeList: string[] = [];
- maxLinesForCsv:number = 100
+
 
 // Fichiers de logs et de backup
  csvString :string = ""
@@ -39,7 +42,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private eventsService: CloudAppEventsService){
 
-    this.isWrongFileTypeLabel = "";
+    this.ErrorLabel = "";
     this.evaluatingLabel = "";
     
   }
@@ -63,7 +66,7 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-// Méthode appellée lorsqu'un fichier est inséré.
+// Méthode appelée lorsqu'un fichier est inséré.
   onFileChange(event:any ){
     const file:File = event.target.files[0];
     this.resetApplication()
@@ -71,11 +74,11 @@ export class MainComponent implements OnInit, OnDestroy {
       if (file) {
         // Vérification du type de fichier
         if (file.type == "text/csv"){
-          this.isWrongFileTypeLabel = "";
+          this.ErrorLabel = "";
           this.files[0] = file;
         }
         else{
-          this.translate.get("Back-end.WrongFileType").subscribe(text=>this.isWrongFileTypeLabel= text);
+          this.translate.get("Back-end.WrongFileType").subscribe(text=>this.ErrorLabel= text);
         }
       }
   }
@@ -86,7 +89,7 @@ export class MainComponent implements OnInit, OnDestroy {
      this.papa.parse(this.files[0],{
         complete: (result) => {
           if (result.meta.delimiter != "	"){
-            this.translate.get("Back-end.BadDelimiter").subscribe(text=>this.isWrongFileTypeLabel= text); return
+            this.translate.get("Back-end.BadDelimiter").subscribe(text=>this.ErrorLabel= text); return
           }else {
           this.evaluateParsing(result)
           }
@@ -105,7 +108,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     // Erreur si fichier trop long
     if(parsedFile.data.length> this.maxLinesForCsv +1 ){
-      this.isWrongFileTypeLabel = this.translate.instant("Back-end.BadLength",
+      this.ErrorLabel = this.translate.instant("Back-end.BadLength",
         {maxLinesForCsv: this.maxLinesForCsv})
       return
     }
@@ -134,7 +137,7 @@ export class MainComponent implements OnInit, OnDestroy {
     header.forEach(label => {
       const possibleHeaderList:Array<string> = Object.keys(itemList[0].item_data)
       if(!possibleHeaderList.includes(label)){
-         this.isWrongFileTypeLabel = this.translate.instant("Back-end.BadHeaderLabel",{headerLabel: label})
+         this.ErrorLabel = this.translate.instant("Back-end.BadHeaderLabel",{headerLabel: label})
          this.needToStop=true
          return
       }
@@ -254,7 +257,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   // Fonction permettant réinitialiser l'application
   resetApplication(){
-    this.isWrongFileTypeLabel = "";
+    this.ErrorLabel = "";
     this.evaluatingLabel= "";
     this.hasEvaluationEnded = false
   }

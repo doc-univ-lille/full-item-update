@@ -1,27 +1,28 @@
 <div  *ngIf="isAdmin">
+  <div class="centered">
   <br> 
   <input type="file" class="file-upload" (change)="onFileChange($event)">
   <br>
-  <Label> {{isWrongFileTypeLabel}} </Label>
+  <Label style="color: red;"> <b>{{ErrorLabel}}</b> </Label>
   <br>
-  <label>{{evaluatingLabel}}</label>
+  <label><b>{{evaluatingLabel}}</b></label>
   <br>
 
   
 <div>
-      <button mat-stroked-button (click)="load()" *ngIf='files.length>0 && isWrongFileTypeLabel==""' translate>
+      <button mat-stroked-button color="primary" (click)="load()" *ngIf='files.length>0 && ErrorLabel=="" && evaluatingLabel==""' translate>
         <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
         {{ 'UI.Launch' | translate }}
       </button>
 
     </div>
-  <div class="eca-actions">
+  <div class="eca-actions padding">
     
-    <button mat-stroked-button (click)="downloadBackupFile()" *ngIf="hasEvaluationEnded" translate>
+    <button mat-raised-button color="primary" (click)="downloadBackupFile()" *ngIf="hasEvaluationEnded" translate>
       <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
       {{ 'UI.BackupDownloadButton' | translate }}
     </button>
-    <button mat-stroked-button (click)="downloadLogsFile()" *ngIf="hasEvaluationEnded" translate>
+    <button mat-raised-button color="primary" (click)="downloadLogsFile()" *ngIf="hasEvaluationEnded" translate>
       <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
       {{ 'UI.LogsDownloadButton' | translate }}
     </button>
@@ -29,3 +30,4 @@
 
 </div>
 <label *ngIf="!isAdmin" >{{ 'UI.ForbiddenAccess' | translate }}</label>
+</div>
