@@ -5,7 +5,8 @@
   <br>
   <Label style="color: red;"> <b>{{ErrorLabel}}</b> </Label>
   <br>
-  <label><b>{{evaluatingLabel}}</b></label>
+  <label style="font-weight: bold;">{{evaluatingLabel}}</label>
+ 
   <br>
 
   
@@ -14,7 +15,9 @@
         <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
         {{ 'UI.Launch' | translate }}
       </button>
-
+ <mat-progress-bar *ngIf='evaluatingLabel!=""'
+                      value={{advancementPercentage}}>
+    </mat-progress-bar>
     </div>
   <div class="eca-actions padding">
     

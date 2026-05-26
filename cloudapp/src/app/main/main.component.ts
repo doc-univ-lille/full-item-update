@@ -6,6 +6,7 @@ import {InitData} from '@exlibris/exl-cloudapp-angular-lib';
 import { finalize } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { CloudAppEventsService } from '@exlibris/exl-cloudapp-angular-lib';
+import { ItemUtils }from '../ItemUtils'
 
 // Po-line-export
 //preferred_language_ca
@@ -22,6 +23,7 @@ export class MainComponent implements OnInit, OnDestroy {
   // Labels
  ErrorLabel:string;
  evaluatingLabel:string;
+ advancementPercentage:number = 10 
 
  hasEvaluationEnded:boolean = false
  isAdmin:boolean = false
@@ -29,6 +31,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
  files:File[] = [];
  barcodeList: string[] = [];
+ itemutils:ItemUtils;
 
 
 // Fichiers de logs et de backup
@@ -40,10 +43,12 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(private papa: Papa, 
     private almaService: AlmaService,
     private translate: TranslateService,
-    private eventsService: CloudAppEventsService){
+    private eventsService: CloudAppEventsService,
+    ){
 
     this.ErrorLabel = "";
     this.evaluatingLabel = "";
+    this.itemutils = new ItemUtils()
     
   }
  
@@ -135,8 +140,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     // On regarde si les noms des colonnes sont valide
     header.forEach(label => {
-      const possibleHeaderList:Array<string> = Object.keys(itemList[0].item_data)
-      if(!possibleHeaderList.includes(label)){
+      if(!this.itemutils.isInAcceptedHeaders(label)){
          this.ErrorLabel = this.translate.instant("Back-end.BadHeaderLabel",{headerLabel: label})
          this.needToStop=true
          return
@@ -165,10 +169,11 @@ export class MainComponent implements OnInit, OnDestroy {
         let headerLabel:string = header[index];
 
           // Insertion de la valeur dans le csv de backup
-          futurCsvLine.push(<string>item["item_data"][headerLabel as keyof Item["item_data"]]);
+          futurCsvLine.push(this.itemutils.getValueByHeaderLabel(headerLabel,item));
 
           // /!\ Cette ligne est APRES l'insertion de la ligne de backup dans le futur csv car elle modifie l'item
-          item["item_data"][headerLabel as keyof Item["item_data"]] = csvData.get(headerLabel)!;
+          item = this.itemutils.modifItem(headerLabel,item,csvData.get(headerLabel)!)
+
       }
 
       futurCsv.push(futurCsvLine)
@@ -260,6 +265,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this.ErrorLabel = "";
     this.evaluatingLabel= "";
     this.hasEvaluationEnded = false
+  }
+
+  updatePercentage(val:number){
+    this.advancementPercentage = this.advancementPercentage + val
   }
 
 }
