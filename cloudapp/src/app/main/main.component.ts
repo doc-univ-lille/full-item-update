@@ -267,8 +267,4 @@ export class MainComponent implements OnInit, OnDestroy {
     this.hasEvaluationEnded = false
   }
 
-  updatePercentage(val:number){
-    this.advancementPercentage = this.advancementPercentage + val
-  }
-
 }
