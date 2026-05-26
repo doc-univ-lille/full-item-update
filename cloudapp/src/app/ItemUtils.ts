@@ -10,11 +10,12 @@ export class ItemUtils {
     }
 
 
+    // Méthode retournant true si le string passé en paramètre est dans la liste des headers acceptés
     isInAcceptedHeaders(header:string):boolean{
         return this.acceptedHeaders.has(header)
     }
 
-
+    // Méthode permettant de modifier un item
     modifItem(headerLabel:string,item:Item,value:string):Item{
         if( this.headersWithDesc.has(headerLabel)){
             item["item_data"][headerLabel as keyof Item["item_data"]]["value"]= value;
@@ -24,7 +25,7 @@ export class ItemUtils {
         return(item)
     }
 
-    
+    // Méthode permettant de récupérer la valeur d'un attibut d'un item grâce au nom de l'atribut passé en paramètre
     getValueByHeaderLabel(headerLabel:string,item:Item):string{
         if( this.headersWithDesc.has(headerLabel)){
             return item["item_data"][headerLabel as keyof Item["item_data"]]["value"];
