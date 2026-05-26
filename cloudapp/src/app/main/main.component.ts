@@ -23,7 +23,6 @@ export class MainComponent implements OnInit, OnDestroy {
   // Labels
  ErrorLabel:string;
  evaluatingLabel:string;
- advancementPercentage:number = 10 
 
  hasEvaluationEnded:boolean = false
  isAdmin:boolean = false

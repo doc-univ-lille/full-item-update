@@ -15,8 +15,8 @@
         <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
         {{ 'UI.Launch' | translate }}
       </button>
- <mat-progress-bar *ngIf='evaluatingLabel!=""'
-                      value={{advancementPercentage}}>
+ <mat-progress-bar *ngIf='(evaluatingLabel!=""&&!hasEvaluationEnded)'
+                      mode="indeterminate">
     </mat-progress-bar>
     </div>
   <div class="eca-actions padding">
