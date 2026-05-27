@@ -1,7 +1,7 @@
 {
    "id": "full-item-update",
-   "title": "full-item-update",
-   "subtitle": "full item update",
+   "title": "Full item update",
+   "subtitle": "Cloud-app made for Alma. It allows a user with general administrator rights to update all the fields of an item listed in a CSV file.",
    "author": "Elsa Logier",
    "contentSecurity": {
       "sandbox": {
