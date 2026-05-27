@@ -8,7 +8,7 @@
     "Back-end":{
         "WrongFileType": "Please insert a .csv file",
         "BadLength": "Number of lines above {{maxLinesForCsv}}, please shorten the csv file",
-        "Loading":"Loading",
+        "Loading":"Loading (Do NOT close this tab)",
         "EndOfProcess":"Process completed",
         "BadDelimiter":"Please use a csv with tabulations as delimiter",
         "BadHeaderLabel" : "The column name '{{headerLabel}}' does not exist. Please refer to the documentation to see the columns name available"

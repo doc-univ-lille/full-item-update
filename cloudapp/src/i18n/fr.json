@@ -8,7 +8,7 @@
     "Back-end":{
         "WrongFileType": "Veuillez entrer un fichier .csv",
         "BadLength": "Nombre de lignes supérieur à {{maxLinesForCsv}}, veuillez raccourcir le csv",
-        "Loading":"En traitement",
+        "Loading":"En traitement (Ne fermez pas cette fenêtre)",
         "EndOfProcess":"Traitement terminé",
         "BadDelimiter": "Veuillez entrer un csv avec une tabulation comme délimiteur",
         "BadHeaderLabel" : "Le nom de colonne '{{headerLabel}}' n'existe pas. Veuillez vous référer à la documentation pour voir les noms de colonne disponibles"
