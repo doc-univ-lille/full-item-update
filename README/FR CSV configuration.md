@@ -26,6 +26,7 @@
 | État de conservation          | physical_condition               |
 | Exception de circulation      | policy                           |
 | ID Magasin distant            | storage_location_id              |
+| Indicateur d'arrêt            | break_indicator                  |
 | Note de conservation          | retention_note                   |
 | Note de services aux lecteurs | fulfillment_note                 |
 | Note de statistiques 1        | statistics_note_1                |

@@ -13,6 +13,7 @@
 | English Label           | CSV header's name            |
 | ----------------------- | ---------------------------- |
 | **Barcode (Mendatory)** | **barcode**                  |
+| Break indicator         | break_indicator              |
 | Chronology I            | chronology_i                 |
 | Chronology J            | chronology_j                 |
 | Chronology K            | chronology_k                 |
