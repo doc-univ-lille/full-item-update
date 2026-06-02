@@ -58,10 +58,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if(data.user.isAdmin){
         this.isAdmin =true;
       }else{
-        // TODO : passer le true en false pour gestion des perms
-        this.isAdmin = true
-
-        console.log("COMPTE NON ADMIN, RETIRER LES DROITS AVANT PUBLICATION")
+        this.isAdmin = false
       }
  
   })
