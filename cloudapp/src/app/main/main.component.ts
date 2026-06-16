@@ -7,10 +7,7 @@ import { finalize } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { CloudAppEventsService } from '@exlibris/exl-cloudapp-angular-lib';
 import { ItemUtils }from '../ItemUtils'
-
-// Po-line-export
-//preferred_language_ca
-// bulk_item_checkout
+import moment from 'moment';
 
 @Component({
   selector: 'app-main',
@@ -18,7 +15,7 @@ import { ItemUtils }from '../ItemUtils'
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
-  maxLinesForCsv:number = 100
+  maxLinesForCsv:number = 1000
 
   // Labels
  ErrorLabel:string;
@@ -32,6 +29,7 @@ export class MainComponent implements OnInit, OnDestroy {
  barcodeList: string[] = [];
  itemutils:ItemUtils;
 
+  date: string = (moment(new Date())).format('YYYY-MM-DD-HH-mm')
 
 // Fichiers de logs et de backup
  csvString :string = ""
@@ -58,7 +56,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if(data.user.isAdmin){
         this.isAdmin =true;
       }else{
-        this.isAdmin = false
+        this.isAdmin = false;
       }
  
   })
@@ -237,7 +235,7 @@ export class MainComponent implements OnInit, OnDestroy {
       const urlBackupFile = window.URL.createObjectURL(blobBackupFile);
       const linkBackupFile = document.createElement('a');
       linkBackupFile.href = urlBackupFile;
-      linkBackupFile.download = 'backup.xlsx';
+      linkBackupFile.download = 'backup-'+ this.date +'.csv';
       linkBackupFile.click();
       window.URL.revokeObjectURL(urlBackupFile);
       
@@ -250,7 +248,7 @@ export class MainComponent implements OnInit, OnDestroy {
       const urlLogs = window.URL.createObjectURL(blobLogs);
       const linkLogs = document.createElement('a');
       linkLogs.href = urlLogs;
-      linkLogs.download = 'logs.txt';
+      linkLogs.download = 'logs-'+ this.date + '.txt';
       linkLogs.click();
       window.URL.revokeObjectURL(urlLogs);
       
