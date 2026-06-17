@@ -15,7 +15,7 @@ import moment from 'moment';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
-  maxLinesForCsv:number = 1000
+  maxLinesForCsv:number = 5000
 
   // Labels
  ErrorLabel:string;
@@ -28,8 +28,6 @@ export class MainComponent implements OnInit, OnDestroy {
  files:File[] = [];
  barcodeList: string[] = [];
  itemutils:ItemUtils;
-
-  date: string = (moment(new Date())).format('YYYY-MM-DD-HH-mm')
 
 // Fichiers de logs et de backup
  csvString :string = ""
@@ -235,7 +233,7 @@ export class MainComponent implements OnInit, OnDestroy {
       const urlBackupFile = window.URL.createObjectURL(blobBackupFile);
       const linkBackupFile = document.createElement('a');
       linkBackupFile.href = urlBackupFile;
-      linkBackupFile.download = 'backup-'+ this.date +'.csv';
+      linkBackupFile.download = 'backup-'+ (moment(new Date())).format('YYYY-MM-DD-HH-mm') +'.csv';
       linkBackupFile.click();
       window.URL.revokeObjectURL(urlBackupFile);
       
@@ -248,7 +246,7 @@ export class MainComponent implements OnInit, OnDestroy {
       const urlLogs = window.URL.createObjectURL(blobLogs);
       const linkLogs = document.createElement('a');
       linkLogs.href = urlLogs;
-      linkLogs.download = 'logs-'+ this.date + '.txt';
+      linkLogs.download = 'logs-'+ (moment(new Date())).format('YYYY-MM-DD-HH-mm') + '.txt';
       linkLogs.click();
       window.URL.revokeObjectURL(urlLogs);
       

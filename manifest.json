@@ -1,9 +1,9 @@
 {
    "id": "doc-univ-lille/full-item-update",
    "title": "Full item update [Beta]",
-   "subtitle": "Update all the fields of an item listed in a CSV file and roll-back available.",
+   "subtitle": "Update all the fields of an item listed in a CSV file + roll-back feature.",
    "author": "Elsa Logier",
-   "description": "This cloudapp allows a user with general administrator rights to update all the fields of an item listed in a CSV file.",
+   "description": "This cloudapp allows a user with general administrator rights to update all the fields of an item listed in a CSV file with roll-back available..",
    "contentSecurity": {
       "sandbox": {
          "downloads": true
