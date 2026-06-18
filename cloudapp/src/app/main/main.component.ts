@@ -54,7 +54,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if(data.user.isAdmin){
         this.isAdmin =true;
       }else{
-        this.isAdmin = false;
+        this.isAdmin = true;
       }
  
   })
@@ -110,11 +110,26 @@ export class MainComponent implements OnInit, OnDestroy {
       return
     }
     
-    // Affichage du message de chargement
-    this.translate.get("Back-end.Loading").subscribe(text=>this.evaluatingLabel= text);
+     // On regarde si les noms des colonnes sont valide
+    header.forEach(label => {
+      if(!this.itemutils.isInAcceptedHeaders(label)){
+         this.ErrorLabel = this.translate.instant("Back-end.BadHeaderLabel",{headerLabel: label})
+         this.needToStop=true
+         return
+      }
+    });
+
+     // Si un nom de colonne n'est pas valide, on arrête tout
+    if(this.needToStop){
+      return
+    }
 
     // Ajout des noms des différentes colonnes dans le csv de backup
     futurCsv.push(header)
+
+     // Affichage du message de chargement
+    this.translate.get("Back-end.Loading").subscribe(text=>this.evaluatingLabel= text);
+
 
     // Pour toutes les lignes du csv, on récupère l'item grâce au code barre (si item non trouvé, une ligne est ajoutée au fichier de logs)
     for(let index= 0; index<csvMapList.length; index++){
@@ -128,21 +143,6 @@ export class MainComponent implements OnInit, OnDestroy {
           this.journal = this.journal + line
       });
 
-    }
-
-    // On regarde si les noms des colonnes sont valide
-    header.forEach(label => {
-      if(!this.itemutils.isInAcceptedHeaders(label)){
-         this.ErrorLabel = this.translate.instant("Back-end.BadHeaderLabel",{headerLabel: label})
-         this.needToStop=true
-         return
-      }
-    });
-
-    // Si un nom de colonne n'est pas valide, on arrête tout
-    if(this.needToStop){
-      this.evaluatingLabel = "";
-      return
     }
 
 
