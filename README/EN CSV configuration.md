@@ -6,7 +6,7 @@
 - The column with the header "barcode" is the only mandatory one. The othes are optional (**the "barcode" column must be the first one**)
 - If a field is left empty in the CSV, the old value is deleted.
 - The column headers must be among those listed below.
-- The csv file cannot exceed 100 lines (excluding the header).
+- The csv file cannot exceed 5 000 lines (excluding the header).
 
 ## Mapping table
 

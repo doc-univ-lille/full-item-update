@@ -6,6 +6,8 @@ La cloud-app Full-item-update a pour objectif de permettre à un utilisateur **a
 
 **Attention : Si un champ est laissé vide pour un exemplaire, l'ancienne valeur est supprimée.**
 
+**Le fichier CSV peut comporter au maximum 5 000 lignes**
+
 # Comment la cloud-app fonctionne
 
 ## 1. Insérer le fichier CSV

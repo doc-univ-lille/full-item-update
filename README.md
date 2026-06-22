@@ -7,6 +7,8 @@ A line in the CSV file is composed of the barcode (always the first column) and 
 
 To use this cloud-app **you need to have read the documentation on the configuration of the CSV file**
 
+**The CSV file can contain up to 5,000 lines without the header.**
+
 ## More information
 
 You can find the following documentations in the **README folder**
@@ -22,6 +24,8 @@ Full-item-update est une cloud-app Alma qui permet, en ayant le rôle d'administ
 Pour chaque ligne du fichier CSV, on retrouve le code barre de l'exemplaire (toujours la première colonne) ainsi qu'une série de colonnes nécessitant un changement de valeur
 
 Pour utiliser la cloud-app full-item-update, **il est impératif d'avoir lu la documentation sur la configuration du fichier CSV (trouvable dans le dossier README).**
+
+**Le fichier CSV peut comporter au maximum 5 000 lignes**
 
 ## Pour plus d'informations
 

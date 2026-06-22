@@ -6,7 +6,7 @@
 - La colonne ayant pour en-tête “barcode” est la seule à être obligatoire le reste est facultatif (elle doit toujours être la première colonne).
 - Si un champ est laissé vide pour un exemplaire, l'ancienne valeur est supprimée.
 - Les colonnes de l'en-tête doivent faire partie de ceux présents dans cette liste
-- Le nombre de ligne maximum du fichier (sans compter l'en-tête) est de 100.
+- Le nombre de ligne maximum du fichier (sans compter l'en-tête) est de 5 000
 
 ## Tableau de correspondance
 

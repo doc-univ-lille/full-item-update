@@ -6,6 +6,8 @@ Full-item-update allows **an Admin user** to update all the fields of a batch of
 
 **Warning : if in the CSV, a field is left empty, the old value is deleted**
 
+**The CSV file can contain up to 5,000 lines without the header.**
+
 # How does this cloud-app works
 
 ## 1. Insert the csv file
