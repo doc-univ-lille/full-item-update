@@ -3,11 +3,13 @@
         "BackupDownloadButton":"Télécharger le fichier de backup",
         "LogsDownloadButton":"Télécharger le fichier de logs",
         "ForbiddenAccess": "Vous devez être administrateur pour utiliser cette cloud-app",
-        "Launch":"Lancer le traitement"
+        "Launch":"Lancer le traitement",
+        "LaunchPhase2" : "Mettre à jour les exemplaires"
     },
     "Back-end":{
         "WrongFileType": "Veuillez entrer un fichier .csv",
         "BadLength": "Nombre de lignes supérieur à {{maxLinesForCsv}}, veuillez raccourcir le csv",
+        "GeneratingCsv": "Génération du fichier de backup",
         "Loading":"En traitement (Ne fermez pas cette fenêtre)",
         "EndOfProcess":"Traitement terminé",
         "BadDelimiter": "Veuillez entrer un csv avec une tabulation comme délimiteur",

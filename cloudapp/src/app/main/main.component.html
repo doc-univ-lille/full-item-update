@@ -11,26 +11,30 @@
 
   
 <div>
-      <button mat-stroked-button color="primary" (click)="load()" *ngIf='files.length>0 && ErrorLabel=="" && evaluatingLabel==""' translate>
+      <button mat-stroked-button color="primary" (click)="load()" *ngIf='files.length>0 && ErrorLabel=="" && evaluatingLabel=="" && stepEvaluation==0' translate>
         <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
         {{ 'UI.Launch' | translate }}
       </button>
- <mat-progress-bar *ngIf='(evaluatingLabel!=""&&!hasEvaluationEnded)'
+ <mat-progress-bar *ngIf='(evaluatingLabel!=""&&(stepEvaluation==1||stepEvaluation==3))'
                       mode="indeterminate">
     </mat-progress-bar>
     </div>
-  <div class="eca-actions padding">
-    
-    <button mat-raised-button color="primary" (click)="downloadBackupFile()" *ngIf="hasEvaluationEnded" translate>
+  <div class="centered">
+    <button mat-raised-button color="primary" (click)="downloadBackupFile()" *ngIf="stepEvaluation==2" translate>
       <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
       {{ 'UI.BackupDownloadButton' | translate }}
     </button>
-    <button mat-raised-button color="primary" (click)="downloadLogsFile()" *ngIf="hasEvaluationEnded" translate>
+    <button mat-raised-button color="primary" (click)="downloadLogsFile()" *ngIf="stepEvaluation==4" translate>
       <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
       {{ 'UI.LogsDownloadButton' | translate }}
     </button>
-  </div>
-
+</div>  
+</div>
+<div class="centered padding">
+  <button mat-raised-button color="primary" (click)="updateAllItems()" *ngIf="stepEvaluation==2" translate>
+      <i class="bi bi-file-earmark-text" style="margin-right: 4px;"></i>
+      {{ 'UI.LaunchPhase2' | translate }}
+    </button>
 </div>
 
 </div>

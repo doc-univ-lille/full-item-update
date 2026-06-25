@@ -21,12 +21,13 @@ export class MainComponent implements OnInit, OnDestroy {
  ErrorLabel:string;
  evaluatingLabel:string;
 
- hasEvaluationEnded:boolean = false
+ stepEvaluation:number = 0
  isAdmin:boolean = false
- needToStop = false
+ needToStop:boolean = false
 
  files:File[] = [];
  barcodeList: string[] = [];
+ itemList: Array<Item>;
  itemutils:ItemUtils;
 
 // Fichiers de logs et de backup
@@ -43,6 +44,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     this.ErrorLabel = "";
     this.evaluatingLabel = "";
+    this.itemList = new Array()
     this.itemutils = new ItemUtils()
     
   }
@@ -54,7 +56,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if(data.user.isAdmin){
         this.isAdmin =true;
       }else{
-        this.isAdmin = true;
+        this.isAdmin = false;
       }
  
   })
@@ -63,11 +65,11 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
+
 // Méthode appelée lorsqu'un fichier est inséré.
   onFileChange(event:any ){
     const file:File = event.target.files[0];
     this.resetApplication()
-
       if (file) {
         // Vérification du type de fichier
         if (file.type == "text/csv"){
@@ -93,10 +95,9 @@ export class MainComponent implements OnInit, OnDestroy {
         }})
    }
 
-  //Méthode permettant le traitement du fichier parsé
+  //Méthode permettant la génération du fichier de backup (et la modification des items en local)
   async evaluateParsing( parsedFile:ParseResult){
 
-    var itemList: Array<Item> = new Array()
     var csvMapList : Map<string,string>[] = this.parsedCsvToMap(parsedFile.data)
     var futurCsv : Array<Array<any>> = new Array();
     const header:string[] = parsedFile.data[0];
@@ -124,18 +125,21 @@ export class MainComponent implements OnInit, OnDestroy {
       return
     }
 
+    // L'évaliation passe en phase 1 (génération du fichier de backup)
+    this.stepEvaluation = 1 ;
+
     // Ajout des noms des différentes colonnes dans le csv de backup
     futurCsv.push(header)
 
      // Affichage du message de chargement
-    this.translate.get("Back-end.Loading").subscribe(text=>this.evaluatingLabel= text);
+    this.translate.get("Back-end.GeneratingCsv").subscribe(text=>this.evaluatingLabel= text);
 
 
     // Pour toutes les lignes du csv, on récupère l'item grâce au code barre (si item non trouvé, une ligne est ajoutée au fichier de logs)
     for(let index= 0; index<csvMapList.length; index++){
       await this.almaService.getBarcode(csvMapList[index].get("barcode")!)
         .then(
-          (i:Item)=> itemList.push(i)
+          (i:Item)=> this.itemList.push(i)
         ).catch(
           (err)=> {
           console.log(err)
@@ -147,7 +151,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
 
     // Préparation des items et du csv de backup
-    itemList.forEach((item:Item) =>{
+    this.itemList.forEach((item:Item) =>{
 
       let modifiedItem:Item = item;
       let csvData:Map<string,string> = this.findMapInMapList(modifiedItem.item_data.barcode, csvMapList);
@@ -171,13 +175,28 @@ export class MainComponent implements OnInit, OnDestroy {
       futurCsv.push(futurCsvLine)
     })
 
+    // Stockage du string de csv de backup
+    this.csvString = this.papa.unparse(futurCsv,{delimiter:"	"})
+
+    // L'évaluation passe en phase 2 (Affichage des boutons de téléchargement du fichier de backup et du bouton de lancement de la prochaine phase)
+    this.stepEvaluation = 2;
+    this.evaluatingLabel = ""
+  }
+
+  // Méthode utilisée pour mettre à jour les exemplaires
+  updateAllItems(){
+    // L'évaluation passe en phase 3 (mise à jour des exemplaires)
+    this.stepEvaluation = 3;
+    this.translate.get("Back-end.Loading").subscribe(text=>this.evaluatingLabel= text);
 
     // Update des items
-    this.almaService.updateArrayOfItems(itemList).pipe(
+    this.almaService.updateArrayOfItems(this.itemList).pipe(
       finalize(()=> {
         // Passage du texte à "traitement terminé" et affichage des boutons
         this.translate.get("Back-end.EndOfProcess").subscribe(text=>this.evaluatingLabel= text);
-        this.hasEvaluationEnded = true;})
+
+        // L'évaluation passe en phase 4 (Téléchargement du fichier de logs)
+        this.stepEvaluation = 4;})
     ).subscribe({
         next: () => {
           console.log(`Successfully saved items`);
@@ -187,9 +206,6 @@ export class MainComponent implements OnInit, OnDestroy {
           this.journal = this.journal + line
         },
       })
-    
-    // Stockage du string de csv de backup
-    this.csvString = this.papa.unparse(futurCsv,{delimiter:"	"})
     
   }
   
@@ -256,7 +272,8 @@ export class MainComponent implements OnInit, OnDestroy {
   resetApplication(){
     this.ErrorLabel = "";
     this.evaluatingLabel= "";
-    this.hasEvaluationEnded = false
+    this.stepEvaluation = 0
+    this.itemList =[];
   }
 
 }

@@ -3,11 +3,13 @@
         "BackupDownloadButton":"Download backup file",
         "LogsDownloadButton":"Download logs file",
         "ForbiddenAccess": "You need to be an administrator to use this cloud-app",
-        "Launch":"Launch"
+        "Launch":"Launch",
+        "LaunchPhase2" : "Update the items"
     },
     "Back-end":{
         "WrongFileType": "Please insert a .csv file",
         "BadLength": "Number of lines above {{maxLinesForCsv}}, please shorten the csv file",
+        "GeneratingCsv": "Generating the backup file",
         "Loading":"Loading (Do NOT close this tab)",
         "EndOfProcess":"Process completed",
         "BadDelimiter":"Please use a csv with tabulations as delimiter",
