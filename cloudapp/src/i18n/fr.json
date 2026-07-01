@@ -4,7 +4,12 @@
         "LogsDownloadButton":"Télécharger le fichier de logs",
         "ForbiddenAccess": "Vous devez être administrateur pour utiliser cette cloud-app",
         "Launch":"Lancer le traitement",
-        "LaunchPhase2" : "Mettre à jour les exemplaires"
+        "LaunchPhase2" : "Mettre à jour les exemplaires",
+        "Advices" : "L'utilisation de Chrome est recommandée pour de meilleures performances.",
+        "Description1" : "La cloud-app comporte deux étapes de traitement. ",
+        "Description2" : "La génération du fichier de Backup à l'issue de laquelle il vous sera possible de télécharger le ficher généré. ",
+        "Description3" : "La modification des notices dans Alma.",
+        "Errors"  :"Un dysfonctionnement a été remarqué avec l'utilisaion de Firefox sous Windows lors de l'insertion d'un fichier. Cela semble commun à plusieurs cloud-apps"
     },
     "Back-end":{
         "WrongFileType": "Veuillez entrer un fichier .csv",
