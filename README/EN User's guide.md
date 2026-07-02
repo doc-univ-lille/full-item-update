@@ -8,6 +8,8 @@ Full-item-update allows **an Admin user** to update all the fields of a batch of
 
 **The CSV file can contain up to 5,000 lines without the header.**
 
+A malfunction has been observed when using Firefox on Windows while inserting a file. It seems to be the same with other cloud-apps
+
 # How does this cloud-app works
 
 ## 1. Insert the csv file

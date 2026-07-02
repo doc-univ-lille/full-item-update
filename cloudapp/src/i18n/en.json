@@ -8,8 +8,7 @@
         "Advices" : "We recommend the use of Chrome in order to obtain the best performance.",
         "Description1" : "This cloud-app process has two steps ",
         "Description2" : "The generation of the backup file",
-        "Description3" : "The items modification in Alma",
-        "Errors"  :"A malfunction has been observed when using Firefox on Windows while inserting a file. It seems to be the same with other cloud-apps"
+        "Description3" : "The items modification in Alma"
         
     },
     "Back-end":{

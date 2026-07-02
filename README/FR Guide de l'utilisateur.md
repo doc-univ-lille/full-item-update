@@ -8,6 +8,8 @@ La cloud-app Full-item-update a pour objectif de permettre à un utilisateur **a
 
 **Le fichier CSV peut comporter au maximum 5 000 lignes**
 
+Un dysfonctionnement a été remarqué avec l'utilisaion de Firefox sous Windows lors de l'insertion d'un fichier. Cela semble commun à plusieurs cloud-apps.
+
 # Comment la cloud-app fonctionne
 
 ## 1. Insérer le fichier CSV
