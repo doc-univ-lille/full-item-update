@@ -24,19 +24,29 @@ Si le fichier est correct, le bouton “Lancer la traitement” apparaît. Sinon
 
 ![alt text](../assets/second-step.png)
 
-## 3. Traitement est en cours
+## 3. Génération du fichier de Backup
 
-Lorsque le traitement est en cours, un texte “En traitement” s'affiche sous le bouton “Parcourir..”. Si une erreur bloquante se déclenche, le traitement sera interrompu et un message d'erreur s'affichera à la place du texte.
+Lorsque la première phase du traitement est en cours, un texte “Génération du fichier de backup” s'affiche sous le bouton “Parcourir..”. Si une erreur bloquante se déclenche, le traitement sera interrompu et un message d'erreur s'affichera à la place du texte.
 
 ![alt text](../assets/third-step.png)
 
-## 4. Traitement est terminé
+## 4. Génération terminée
 
-Lorsque le traitement est fini, deux boutons s'affichent.
+A la fin de la première phase du traitement, deux boutons s'affichent :
 
-Ils permettent de télécharger :
-
-- le fichier contenant les données avant changement (csv au format .xlsx) en cliquant sur “Télécharger le fichier de Backup”.
-- le journal d'erreur (format .txt) en cliquant sur “Télécharger le fichier de logs”.
+- le bouton “Télécharger le fichier de Backup” permettant de télécharger le fichier contenant les données avant changement (csv au format .xlsx).
+- le bouton “Mettre à jour les exemplaires” qui permet de lancer la phase suivante du traitement.
 
 ![alt text](../assets/fourth-step.png)
+
+## 5. Mise à jour des notices
+
+Après le clic sur le bouton “Mettre à jour les exemplaires” l'application va lancer la mise à jour des notices et le texte “en traitement” va apparaître. Veuillez ne pas fermer la fenêtre lors de ce traitement.
+
+![alt text](../assets/fifth-step.png)
+
+## 6. Traitement terminé
+
+Lorsque le traitement est fini, un bouton s'affiche. Il permet de télécharger le journal d'erreur (format .txt)
+
+![alt text](../assets/sixth-step.png)
