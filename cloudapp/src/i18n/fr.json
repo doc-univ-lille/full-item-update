@@ -3,8 +3,12 @@
         "BackupDownloadButton":"Télécharger le fichier de backup",
         "LogsDownloadButton":"Télécharger le fichier de logs",
         "ForbiddenAccess": "Vous devez être administrateur pour utiliser cette cloud-app",
-        "Launch":"Lancer le traitement",
-        "LaunchPhase2" : "Mettre à jour les exemplaires"
+        "Launch":"Lancer le traitement (phase 1)",
+        "LaunchPhase2" : "Mettre à jour les exemplaires (phase 2)",
+        "Advices" : "L'utilisation de Chrome est recommandée pour de meilleures performances.",
+        "Description1" : "La cloud-app comporte deux étapes de traitement. ",
+        "Description2" : "La génération du fichier de Backup à l'issue de laquelle il vous sera possible de télécharger le ficher généré. ",
+        "Description3" : "La modification des notices dans Alma."
     },
     "Back-end":{
         "WrongFileType": "Veuillez entrer un fichier .csv",

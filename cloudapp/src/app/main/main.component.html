@@ -37,5 +37,18 @@
     </button>
 </div>
 
+<div *ngIf="stepEvaluation==0">
+  <hr>
+  <br>
+  {{ 'UI.Description1' | translate }} : 
+  <ul>
+    <li>{{ 'UI.Description2' | translate }}</li>
+    <li>{{ 'UI.Description3' | translate }}</li>
+  </ul>
+  <hr>
+  {{ 'UI.Advices' | translate }}
+
+</div>
+
 </div>
 <label *ngIf="!isAdmin" >{{ 'UI.ForbiddenAccess' | translate }}</label>

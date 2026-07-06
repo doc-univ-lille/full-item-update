@@ -22,7 +22,6 @@ _main.component.ts_
   - ErrorLabel => Displayed in the html of the app when an error is raised
   - evaluatingLabel => Displayed in the html of the app when the process has started or when it has ended
 - Booleans (:boolean)
-  - hasEvaluationEnded => Is true if the process has ended
   - isAdmin => Is true if the user has the general administrator role.
   - needToStop => Is true if a blocking error is raised.
 - files (:File[]) => Stores the CSV file inserted by the user.
@@ -30,6 +29,7 @@ _main.component.ts_
 - File preparation (:string)
   - csvString => Used to create the Backup file.
   - journal => Used to create the logs file.
+- stepEvaluation => Number that increments at each phase of the application (creation of the backup file, downloading the backup file, processing)
 
 **Methods**
 

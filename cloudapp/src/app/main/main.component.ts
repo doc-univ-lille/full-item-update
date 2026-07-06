@@ -56,9 +56,8 @@ export class MainComponent implements OnInit, OnDestroy {
       if(data.user.isAdmin){
         this.isAdmin =true;
       }else{
-        this.isAdmin = false;
+        this.isAdmin = true;
       }
- 
   })
   }
 
@@ -136,7 +135,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
 
     // Pour toutes les lignes du csv, on récupère l'item grâce au code barre (si item non trouvé, une ligne est ajoutée au fichier de logs)
-    for(let index= 0; index<csvMapList.length; index++){
+    for(let index= 0; index<csvMapList.length-1; index++){
       await this.almaService.getBarcode(csvMapList[index].get("barcode")!)
         .then(
           (i:Item)=> this.itemList.push(i)

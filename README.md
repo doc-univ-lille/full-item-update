@@ -9,6 +9,8 @@ To use this cloud-app **you need to have read the documentation on the configura
 
 **The CSV file can contain up to 5,000 lines without the header.**
 
+We recommend the use of chrome in order to obtain the best performance.
+
 ## More information
 
 You can find the following documentations in the **README folder**
@@ -26,6 +28,8 @@ Pour chaque ligne du fichier CSV, on retrouve le code barre de l'exemplaire (tou
 Pour utiliser la cloud-app full-item-update, **il est impératif d'avoir lu la documentation sur la configuration du fichier CSV (trouvable dans le dossier README).**
 
 **Le fichier CSV peut comporter au maximum 5 000 lignes**
+
+Nous recommendons l'utilisation de chrome afin d'obtenir les meilleures performances.
 
 ## Pour plus d'informations
 

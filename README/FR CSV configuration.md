@@ -2,11 +2,18 @@
 
 ## Précautions à prendre
 
-- Le fichier inséré doit obligatoirement être au format csv avec des tabulations comme séparateur.
-- La colonne ayant pour en-tête “barcode” est la seule à être obligatoire le reste est facultatif (elle doit toujours être la première colonne).
-- Si un champ est laissé vide pour un exemplaire, l'ancienne valeur est supprimée.
+- Le fichier inséré doit obligatoirement être au format csv avec des tabulations comme séparateur
+- La colonne ayant pour en-tête “barcode” est la seule à être obligatoire le reste est facultatif (elle doit toujours être la première colonne)
+- Si un champ est laissé vide pour un exemplaire, l'ancienne valeur est supprimée
 - Les colonnes de l'en-tête doivent faire partie de ceux présents dans cette liste
 - Le nombre de ligne maximum du fichier (sans compter l'en-tête) est de 5 000
+
+## Paramètres spécifiques du fichier
+
+- Le fichier inséré doit obligatoirement être au format csv avec des tabulations comme séparateur
+- Le fichier doit être encodé en UTF-8
+- Les End Of Line sont “\n” (EOL par défaut)
+- Il n'y a aucune restriction de caractère pour le nom du fichier
 
 ## Tableau de correspondance
 
