@@ -7,7 +7,7 @@
         "LaunchPhase2" : "Mettre à jour les exemplaires (phase 2)",
         "Advices" : "L'utilisation de Chrome est recommandée pour de meilleures performances.",
         "Description1" : "La cloud-app comporte deux étapes de traitement. ",
-        "Description2" : "La génération du fichier de Backup à l'issue de laquelle il vous sera possible de télécharger le ficher généré. ",
+        "Description2" : "La génération du fichier de Backup à l'issue de laquelle il vous sera possible de télécharger le ficher généré afin de vous permettre de faire un Rollback en cas de problème. ",
         "Description3" : "La modification des notices dans Alma."
     },
     "Back-end":{
