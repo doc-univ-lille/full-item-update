@@ -8,7 +8,8 @@
         "Advices" : "We recommend the use of Chrome in order to obtain the best performance.",
         "Description1" : "This cloud-app process has two steps ",
         "Description2" : "The generation of the backup file. This file can be used later to do a Rollback.",
-        "Description3" : "The items modification in Alma"
+        "Description3" : "The items modification in Alma",
+        "Documentation" : "Link to the documentation"
         
     },
     "Back-end":{

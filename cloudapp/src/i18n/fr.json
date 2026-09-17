@@ -8,7 +8,8 @@
         "Advices" : "L'utilisation de Chrome est recommandée pour de meilleures performances.",
         "Description1" : "La cloud-app comporte deux étapes de traitement. ",
         "Description2" : "La génération du fichier de Backup à l'issue de laquelle il vous sera possible de télécharger le ficher généré afin de vous permettre de faire un Rollback en cas de problème. ",
-        "Description3" : "La modification des notices dans Alma."
+        "Description3" : "La modification des notices dans Alma.",
+        "Documentation" : "Lien vers la documentation"
     },
     "Back-end":{
         "WrongFileType": "Veuillez entrer un fichier .csv",
@@ -17,6 +18,6 @@
         "Loading":"En traitement (Ne fermez pas cette fenêtre)",
         "EndOfProcess":"Traitement terminé",
         "BadDelimiter": "Veuillez entrer un csv avec une tabulation comme délimiteur",
-        "BadHeaderLabel" : "Le nom de colonne '{{headerLabel}}' n'existe pas. Veuillez vous référer à la documentation pour voir les noms de colonne disponibles"
+        "BadHeaderLabel" : "Le nom de colonne '{{headerLabel}}' n'existe pas. Veuillez vous référer à la documentation pour voir les noms de colonne disponibles",
     }
 }
