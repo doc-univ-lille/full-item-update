@@ -23,7 +23,6 @@ _main.component.ts_
   - ErrorLabel => Affiché dans le html de l'application pour prévenir d'une erreur
   - evaluatingLabel => Affiché dans le html de l'application pour prévenir que le csv est en cours de traitement ou que le traitement est terminé
 - Les booléens (:boolean)
-  - hasEvaluationEnded => Est à true si l'évaluation est terminée
   - isAdmin => Est à true si l'utilisateur est Administrateur général
   - needToStop => Est à true si il y a une erreur bloquante lors de l'évaluation
 - files (:File[]) => Permet de stocker le fichier CSV inséré en entrée
@@ -31,13 +30,15 @@ _main.component.ts_
 - Les préparations de fichiers (:string)
   - csvString => Permet de créer le fichier de backup
   - journal => Permet de créer le journal de logs
+- stepEvaluation => Nombre qui s'incrémente entre les différentes phases de l'application (création du fichier de backup, proposition du téléchargement du fichier de backup, traitement des données,…)
 
 **Les méthodes de la classe**
 
 - ngOnInit => Utilisé pour la gestion des droits
 - onFileChange => Appelée lorsqu'un fichier est insérée dans la cloudapp
 - load => Parsing du CSV et lancement du traitement
-- evaluateParsing => Utilisée pour traiter le fichier parsé
+- evaluateParsing => Utilisée pour véifier le CSV, générer le fichier de backup et modifier les exemplaires en local
+- updateAllItems => Utilisée pour mettre à jour les exemplaires dans Alma
 - parsedCsvToMap => Prend en paramètre le CSV parsé et retourne une liste de maps contenant en clé les champs en en-tête du CSV et en valeur, la valeur associée à cette colonne dans le CSV.
 - findMapInMapList => Prend en paramètre un code-barres et une liste de Maps (représentant les données du CSV) et retrouve dans la liste de celle correspondant à la ligne avec le code-barres.
 - downloadBackupFile => Permet de télécharger le fichier de backup

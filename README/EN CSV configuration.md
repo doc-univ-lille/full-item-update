@@ -3,10 +3,16 @@
 ## Beware
 
 - The inserted file **must be** in CSV format with tabs as the delimiter.
-- The column with the header "barcode" is the only mandatory one. The othes are optional (**the "barcode" column must be the first one**)
+- The column with the header "barcode" is the only mandatory one. The othes are optional (**the "barcode" column must be the first one**).
 - If a field is left empty in the CSV, the old value is deleted.
 - The column headers must be among those listed below.
 - The csv file cannot exceed 5 000 lines (excluding the header).
+
+## File parameters
+
+- The file must be encoded with UTF-8.
+- The end of lines has to be "\n" (default EOL).
+- There are no restrictions on the filename.
 
 ## Mapping table
 
